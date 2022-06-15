@@ -16,7 +16,7 @@ fold.
  This project had instructor guidance on what types of tasks to complete, but I chose to use it as an exercise in self-reliance. Making sure that I only asked for
  assistance when absolutely necessary. With that I made it through the 10 day project in only 7.5 days, and only asked for help once.
  
- *[CRUD Functionality](#CRUD-functionality)
- *[Querying an API](#query-API)
- *[CSS techniques](#CSS-techniques)
- *[Web Scraping](#web-scraping)
+ * [CRUD Functionality](#CRUD-functionality)
+ * [Querying an API](#query-API)
+ * [CSS techniques](#CSS-techniques)
+ * [Web Scraping](#web-scraping)
