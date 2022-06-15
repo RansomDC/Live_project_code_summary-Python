@@ -7,7 +7,7 @@ fold.
   on several criteria. 
   Second, to expand my understanding of the Django framework by doing tasks in the project, including:
   * [CRUD functionality](#CRUD-functionality): Providing ways to create database items populated by user input, read and review data already in the database, update information whether userinputted or not, and delete any information that is no longer relevant.
-    * [Querying an API](#query-API): Using an API to request information from the job searching website Adzuna and then parsing through that data to aquire the data needed for the user. As well as the ability to automatically save important data from those queries.
+* [Querying an API](#query-API): Using an API to request information from the job searching website Adzuna and then parsing through that data to aquire the data needed for the user. As well as the ability to automatically save important data from those queries.
 * [CSS techniques](#CSS-techniques): Creating a user-friendly GUI for ease of use.
 * [Web Scraping](#web-scraping): Learning how to responsibly scrabe websites for useful data.
     
