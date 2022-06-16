@@ -1,11 +1,12 @@
 # Python Live Project
 
 ## Introduction
+During my Software Developer Bootcamp I did a Live Project, where I worked on a web application from start to finish.
 Over a period of a week and a half I worked to create a simple, yet functional Django application for collecting information on job postings. The goal of this was two-
 fold.
   First, to provide a working application that could store information about job postings, and provide a place to compare various positions and companies based 
   on several criteria. 
-  Second, to expand my understanding of the Django framework by doing tasks in the project, including:
+  Second, to expand my understanding of the Django framework by doing tasks within the project, including:
 * [CRUD functionality](#CRUD-functionality): Providing ways to create database items populated by user input, read and review data already in the database, update information whether userinputted or not, and delete any information that is no longer relevant.
 * [Querying an API](#query-API): Using an API to request information from the job searching website Adzuna and then parsing through that data to aquire the data needed for the user. As well as the ability to automatically save important data from those queries.
 * [Styling techniques](#CSS-techniques): Creating a user-friendly GUI for ease of use.
