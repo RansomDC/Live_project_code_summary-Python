@@ -21,6 +21,7 @@ fold.
 ## * [Querying an API](#query-API)
   This was my first time making a request to an API for information, and although I had read about API's before I now have a much more thorough understanding of their use. I used the API for the [Adzuna](https://developer.adzuna.com/) job search website. This is a fairly simple API with very clear and helpful documentation. I was able to use it for allow the users of my application to do a simple search for jobs with given keywords and general locations. As shown below I took the data from the search which sent via a POST request and formatted the data so that it would successfully
     work in the request url. When the API response came back I saved the relevant data to a temporary table in the database. Once the results page was loaded those data would be pulled and populate the page each filling a form so that they could be individually saved. Here is the data for saving the API results to the temporary database table.
+![API search in action gif](http://url/to/img.png](https://github.com/RansomDC/Live_project_code_summary-Python/blob/main/API-search.gif)
 
     # This gets the location information submitted with the form on APIJobSearch.html
     description = request.POST['what']
@@ -86,8 +87,8 @@ fold.
 
  ## * [Web Scraping](#web-scraping)
   Although I did not make the web scraping a primary focus of this particular project. It was a very useful skill to learn. More importantly in reading up on web scraping documentation, I learned a great deal about how to resonsibly scrape the web without it being a burden on the server that I am accessing. Since the example on this website will not be acvtively used I did not set up a regulatory element to control the amount of times that request would be made. But if preparing this project for a real-world deployment I would certainly include a method to preven unnecessary repetetive calls (especially since the source for the call is on the websites main page).
-
-# Gets the request of the data from the website.
+![weather results display](https://github.com/RansomDC/Live_project_code_summary-Python/blob/main/Web-scraped-weather.png)
+    # Gets the request of the data from the website.
     page = requests.get('https://forecast.weather.gov/MapClick.php?lat=45.5118&lon=-122.6756#.YqN-yXbMIuU')
     soup = BeautifulSoup(page.content, 'html.parser')
     today = soup.select('li.forecast-tombstone:first-child')
