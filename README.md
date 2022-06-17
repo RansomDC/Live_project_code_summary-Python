@@ -22,42 +22,60 @@ fold.
   This was my first time making a request to an API for information, and although I had read about API's before I now have a much more thorough understanding of their use. I used the API for the [Adzuna](https://developer.adzuna.com/) job search website. This is a fairly simple API with very clear and helpful documentation. I was able to use it for allow the users of my application to do a simple search for jobs with given keywords and general locations. As shown below I took the data from the search which sent via a POST request and formatted the data so that it would successfully
     work in the request url. When the API response came back I saved the relevant data to a temporary table in the database. Once the results page was loaded those data would be pulled and populate the page each filling a form so that they could be individually saved. Here is the data for saving the API results to the temporary database table.
 
-        description = request.POST['what']
-        formattedDescription = (description.replace(" ", "%20")).replace(",", "%2C")
-        location = request.POST['location']
-        formattedLocation = (location.replace(" ", "%20")).replace(",", "%2C")
-        search = [description, location]
+    # This gets the location information submitted with the form on APIJobSearch.html
+    description = request.POST['what']
+    # This changes the string received from the form to a syntax that the url can recognize (e.g. exchange " " for %20)
+    formattedDescription = (description.replace(" ", "%20")).replace(",", "%2C")
+    # This gets the location information submitted with the form on APIJobSearch.html
+    location = request.POST['location']
+    # This changes the string received from the form to a syntax that the url can recognize (e.g. exchange " " for %20)
+    formattedLocation = (location.replace(" ", "%20")).replace(",", "%2C")
 
-        response = requests.get(
-            'https://api.adzuna.com/v1/api/jobs/us/search/1?app_id=41b593cb&app_key=58bb774dace8a185a8cc32fbdff00416&results_per_page=5&what={}&where={}&sort_by=date'.format(
-                formattedDescription, formattedLocation))
+    # creates an array that will be sent to the page as context so that the search bars will maintain their data when
+    # the page is re-loaded
+    search = [description, location]
 
-        if not response.status_code == 200:
-            return render(request, 'JobScraping/error.html')
+    # Queries an API for 20 results based on the location and description received above
+    response = requests.get(
+        'https://api.adzuna.com/v1/api/jobs/us/search/1?app_id=41b593cb&app_key=58bb774dace8a185a8cc32fbdff00416&results_per_page=5&what={}&where={}&sort_by=date'.format(
+            formattedDescription, formattedLocation))
 
-        json_data = response.json()
-        results = json_data['results']
 
-        for i in results:
-            try:
-                jobData = Temp(
-                    minimum_pay=i['salary_min'],
-                    maximum_pay=i['salary_max'],
-                    title=i['title'],
-                    company=i['company']['display_name'],
-                    job_url=i['redirect_url'],
-                    date_added=(i['created'])[0:10],
-                )
-            except:
-                jobData = Temp(
-                    minimum_pay='',
-                    maximum_pay='',
-                    title=i['title'],
-                    company=i['company']['display_name'],
-                    job_url=i['redirect_url'],
-                    date_added=(i['created'])[0:10],
-                )
-            jobData.save()
+    print(response.status_code)
+
+    # Sends up to the error page if the request does not work.
+    if not response.status_code == 200:
+        return render(request, 'JobScraping/error.html')
+
+
+    # pulls the json data from the API response
+    json_data = response.json()
+    # json_data is a dictionary with a single key which contains an array of the job objects. This sets the variable
+    # results to that array.
+    results = json_data['results']
+
+    # This takes the results and puts them in a form to add them to the Temp database
+    for i in results:
+        try:
+            jobData = Temp(
+                minimum_pay=i['salary_min'],
+                maximum_pay=i['salary_max'],
+                title=i['title'],
+                company=i['company']['display_name'],
+                job_url=i['redirect_url'],
+                date_added=(i['created'])[0:10],
+            )
+        except:
+            jobData = Temp(
+                minimum_pay='',
+                maximum_pay='',
+                title=i['title'],
+                company=i['company']['display_name'],
+                job_url=i['redirect_url'],
+                date_added=(i['created'])[0:10],
+            )
+        # This saves the data that I gather with the code above to the Temp database table
+        jobData.save()
 
 
  ## * [Styling techniques](#CSS-techniques)
@@ -69,17 +87,16 @@ fold.
  ## * [Web Scraping](#web-scraping)
   Although I did not make the web scraping a primary focus of this particular project. It was a very useful skill to learn. More importantly in reading up on web scraping documentation, I learned a great deal about how to resonsibly scrape the web without it being a burden on the server that I am accessing. Since the example on this website will not be acvtively used I did not set up a regulatory element to control the amount of times that request would be made. But if preparing this project for a real-world deployment I would certainly include a method to preven unnecessary repetetive calls (especially since the source for the call is on the websites main page).
 
-        def JobScraping_home(request):
-          page = requests.get('https://forecast.weather.gov/MapClick.php?lat=45.5118&lon=-122.6756#.YqN-yXbMIuU')
-          soup = BeautifulSoup(page.content, 'html.parser')
-          today = soup.select('li.forecast-tombstone:first-child')
+# Gets the request of the data from the website.
+    page = requests.get('https://forecast.weather.gov/MapClick.php?lat=45.5118&lon=-122.6756#.YqN-yXbMIuU')
+    soup = BeautifulSoup(page.content, 'html.parser')
+    today = soup.select('li.forecast-tombstone:first-child')
 
-          current = today[0].find(class_='period-name').get_text()
-          description = today[0].find(class_='short-desc').get_text()
-          temp = today[0].find(class_='temp-high').get_text()
+    # We will be extracting the current day's weather only.
+    current = today[0].find(class_='period-name').get_text()
+    description = today[0].find(class_='short-desc').get_text()
+    temp = today[0].find(class_='temp-high').get_text()
 
-          data = [current, description, temp]
-          context = {'data': data}
-          return render(request, 'jobScraping/JobScraping_home.html', context)
-        
-
+    data = [current, description, temp]
+    context = {'data': data}
+    return render(request, 'jobScraping/JobScraping_home.html', context)
